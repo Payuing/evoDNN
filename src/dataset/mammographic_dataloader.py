@@ -1,7 +1,10 @@
 """
 Discrimination of benign and malignant mammographic masses based on BI-RADS attributes and the patient's age.
 """
-import numpy as np, pandas as pd
+import numpy as np
+import pandas as pd
+from dataset_peek import data_peek
+
 
 def load_mammographic():
     fp = 'mammographic_masses.csv'
@@ -12,8 +15,4 @@ def load_mammographic():
 
 
 if __name__ == '__main__':
-    data, target = load_mammographic()
-    print(type(data))
-    print(data)
-    print(type(target))
-    print(target)
+    data_peek("Mammographic masses", load_mammographic)

@@ -1,9 +1,11 @@
 """
-This data set contains 10 variables that are age, gender, total Bilirubin, direct Bilirubin, total proteins, albumin, A/G ratio, SGPT, SGOT and Alkphos.
+This data set contains 10 variables that are age, gender, total Bilirubin, direct Bilirubin, total proteins,
+albumin, A/G ratio, SGPT, SGOT and Alkphos.
 """
-
 import numpy as np, pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from dataset_peek import data_peek
+
 
 def load_ilpd():
     fp = 'ilpd.csv'
@@ -16,9 +18,6 @@ def load_ilpd():
     y = np.array(raw_data.iloc[:, 10])
     return x, y
 
+
 if __name__ == '__main__':
-    data, target = load_ilpd()
-    print(type(data))
-    print(data)
-    print(type(target))
-    print(target)
+    data_peek("Ilpd", load_ilpd)

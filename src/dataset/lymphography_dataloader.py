@@ -1,7 +1,10 @@
 """
  This lymphography domain was obtained from the University Medical Centre, Institute of Oncology, Ljubljana, Yugoslavia. (Restricted access)
 """
-import numpy as np, pandas as pd
+import numpy as np
+import pandas as pd
+from dataset_peek import data_peek
+
 
 def load_lymphography():
     fp = 'lymphography.csv'
@@ -12,8 +15,4 @@ def load_lymphography():
 
 
 if __name__ == '__main__':
-    data, target = load_lymphography()
-    print(type(data))
-    print(data)
-    print(type(target))
-    print(target)
+    data_peek("Lymphography", load_lymphography)

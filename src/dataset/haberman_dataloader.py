@@ -1,7 +1,9 @@
 """
 Dataset contains cases from study conducted on the survival of patients who had undergone surgery for breast cancer
 """
-import numpy as np, pandas as pd
+import numpy as np
+import pandas as pd
+from dataset_peek import data_peek
 
 def load_haberman():
     fp = 'haberman.csv'
@@ -10,9 +12,6 @@ def load_haberman():
     y = np.array(raw_data.iloc[:, 3])
     return x, y
 
+
 if __name__ == '__main__':
-    data, target = load_haberman()
-    print(type(data))
-    print(data)
-    print(type(target))
-    print(target)
+    data_peek("Haberman", load_haberman)
