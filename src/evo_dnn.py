@@ -7,51 +7,52 @@ class EvoDNN:
     def __init__(self,
                  feature_number: int,
                  output_size: int,
-                 hidden_layers: np.ndarray,
+                 layers: np.ndarray,
                  output_layer_activation_function: Callable,
                  hidden_layer_functions: list,
                  verbose: bool = False):
         self.feature_number = feature_number
         self.output_size = output_size
-        self.hidden_layers = hidden_layers
+        self.layers = layers
         self.output_layer_activation_function = output_layer_activation_function
         self.hidden_layer_functions = hidden_layer_functions \
             if hidden_layer_functions else [af.sigmoid]
         self.fitness = float("-inf")
         self.verbose = verbose
+        self.first_layer = 0
 
-        self.hidden_layer_bias = list()
-        self.hidden_layer_functions_idx = list()
-        self.input_to_hidden_layer_weight_matrix = None
-        self.hidden_layer_to_output_weight_matrix = None
-        self.hidden_layer_to_hidden_layer_weight_matrix_list = list()
+        self.biases = list()
+        self.functions_idxes = list()
+        self.weights = list()
 
     def init_parameters(self):
-        for node_size in self.hidden_layers:
-            self.hidden_layer_bias.append(np.random.uniform(size=node_size))
-            self.hidden_layer_functions_idx.append(
+        for neuron_size in self.layers:
+            self.biases.append(np.random.uniform(size=neuron_size))
+            self.functions_idxes.append(
                 np.random.randint(
                     len(self.hidden_layer_functions),
-                    size=node_size))
+                    size=neuron_size))
 
-        self.input_to_hidden_layer_weight_matrix = np.random.uniform(size=(self.feature_number, self.hidden_layers[0]))
-        for layer in range(len(self.hidden_layers) - 1):
-            self.hidden_layer_to_hidden_layer_weight_matrix_list.append(
-                np.random.uniform(size=(
-                    self.hidden_layers[layer],
-                    self.hidden_layers[layer + 1])))
-        self.hidden_layer_to_output_weight_matrix = np.random.uniform(size=(self.hidden_layers[-1], self.output_size))
-
+        for layer in range(len(self.layers)):
+            if layer == self.first_layer:
+                self.weights.append(
+                    np.random.uniform(size=(
+                        self.feature_number,
+                        self.layers[self.first_layer]))
+                )
+            else:
+                self.weights.append(
+                    np.random.uniform(size=(
+                        self.layers[layer - 1],
+                        self.layers[layer])))
         if self.verbose:
-            print(f"Network bias: \n {self.hidden_layer_bias}"
-                  f"Network function index: \n {self.hidden_layer_functions_idx}\n"
-                  f"Network input to hidden layer weight matrix shape: "
-                  f"{self.input_to_hidden_layer_weight_matrix.shape}\n"
-                  f"Network hidden layer to hidden layer length, shape: "
-                  f"{len(self.hidden_layer_to_hidden_layer_weight_matrix_list)}, "
-                  f"{self.hidden_layer_to_hidden_layer_weight_matrix_list[0].shape}\n"
-                  f"Network hidden layer to output weight matrix shape: "
-                  f"{self.hidden_layer_to_output_weight_matrix.shape}")
+            self.show_verbose()
+
+    def show_verbose(self):
+        print(f"Network biases: \n {self.biases}"
+              f"Network function indexes: \n {self.functions_idxes}\n"
+              f"Network weight length, shape: "
+              f"{len(self.weights), self.weights[0].shape}\n")
 
 
 if __name__ == '__main__':
